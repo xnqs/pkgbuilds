@@ -1,0 +1,21 @@
+pkgname="turbofetch-git"
+pkgver=0.1
+pkgrel=1
+pkgdesc="Lightning fast and sleek fetch script for Linux"
+arch=("x86_64")
+url="https://github.com/xnqs/turbofetch"
+license=('GPL')
+provides=("turbofetch")
+conflicts=("turbofetch")
+source=("$pkgname::git+https://github.com/xnqs/turbofetch.git")
+md5sums=("SKIP")
+
+prepare() {
+	cd "$srcdir/$pkgname"
+	gcc main.c -o turbofetch -O2 -lpthread -lpci
+}
+
+package() {
+	cd "$srcdir/$pkgname"
+	install -Dm655 turbofetch "$pkgdir/usr/bin/turbofetch"
+}
