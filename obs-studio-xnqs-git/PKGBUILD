@@ -33,12 +33,10 @@ source=("$pkgname::git+https://github.com/obsproject/obs-studio.git#branch=maste
         "git+https://github.com/nlohmann/json.git"
         "git+https://github.com/nayuki/QR-Code-generator.git"
         "git+https://github.com/zaphoyd/websocketpp.git"
-        "fix_python_binary_loading.patch"
-        "0000-obs-kmsgrab-fix.patch")
+        "fix_python_binary_loading.patch")
 
 md5sums=("SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP"
-         "051b90f05e26bff99236b8fb1ad377d1"
-         "a1a5fcc7c30ff0447ccda257bde05609")
+         "051b90f05e26bff99236b8fb1ad377d1")
 
 pkgver() {
   cd $pkgname
@@ -71,6 +69,7 @@ build() {
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_LIBDIR=lib \
     -DBUILD_BROWSER=ON \
+    -DENABLE_RTMPS=ON \
     -DCEF_ROOT_DIR="/opt/cef-obs" \
     -DOBS_VERSION_OVERRIDE=$(echo -n "$pkgver" | cut -d. -f1-4 | sed 's/beta//') ..
 
