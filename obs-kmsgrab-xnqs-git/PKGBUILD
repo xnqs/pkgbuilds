@@ -1,4 +1,4 @@
-pkgname="obs-kmsgrab-xnqs-git"
+pkgname=obs-kmsgrab-xnqs-git
 pkgver=0.1
 pkgrel=1
 arch=("x86_64")
@@ -16,13 +16,18 @@ sha256sums=("SKIP")
 # Note that this creates a huge security vulnerability because we are giving admin capabilities to the 
 # linux-kmsgrab-send binary. This means that anyone can call this binary and grab any one of your screens.
 # Only enable this if you are absolutely sure that you know what you're doing.
-__disable_polkit="n"
+_disable_polkit="n"
+
+if [ "$_disable_polkit" == "n" ]; then
+	depends+=("polkit")
+	depends+=("polkit-qt5")
+fi
 
 prepare() {
 	cd "$srcdir/obs-kmsgrab/"
 	mkdir -p build && cd build
 	export CMAKE_PREFIX_PATH="$pkgdir/usr"
-	if [ "$__disable_polkit" == "n" ]; then
+	if [ "$_disable_polkit" == "n" ]; then
 		cmake .. -GNinja -DCMAKE_INSTALL_PREFIX="$CMAKE_PREFIX_PATH"
 	else
 		cmake .. -GNinja -DCMAKE_INSTALL_PREFIX="$CMAKE_PREFIX_PATH" -DENABLE_POLKIT=NO
@@ -33,7 +38,7 @@ prepare() {
 package() {
 	cd "$srcdir/obs-kmsgrab/build"
 	ninja install
-	if [ "$__disable_polkit" == "y" ]; then
+	if [ "$_disable_polkit" == "y" ]; then
 		setcap cap_sys_admin+ep "$CMAKE_PREFIX_PATH/lib/obs-plugins/linux-kmsgrab-send"
 	fi
 }
