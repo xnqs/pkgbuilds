@@ -1,0 +1,28 @@
+pkgname="xnqscfg-git"
+pkgver=r7.7e44afd
+pkgrel=1
+pkgdesc="simple configuration library + parser for C++"
+arch=("any")
+url="https://github.com/xnqs/xnqscfg"
+makedepends=("cmake"
+             "make"
+             "git")
+source=("xnqscfg::git+https://github.com/xnqs/xnqscfg.git")
+sha256sums=("SKIP")
+
+pkgver() {
+  cd xnqscfg
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+build() {
+	cd "$srcdir/xnqscfg"
+	mkdir -p build && cd build
+	cmake .. -DCMAKE_INSTALL_PREFIX="/usr"
+	make
+}
+
+package() {
+	cd "$srcdir/xnqscfg/build"
+	make DESTDIR="$pkgdir/" install
+}
