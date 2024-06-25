@@ -1,5 +1,5 @@
 pkgname="xnqscfg-git"
-pkgver=r7.7e44afd
+pkgver=r9.c339cb3
 pkgrel=1
 pkgdesc="simple configuration library + parser for C++"
 arch=("any")
